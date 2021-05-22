@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CourseInput from './Components/CourseGoals/CourseGoalInput/CourseInput';
+import CourseGoalList from './Components/CourseGoals/CourseGoalList/CourseGoalList';
 import './App.css';
 
 function App() {
@@ -17,10 +18,30 @@ function App() {
     });
   };
 
+  const deleteItemHandler = goalId => {
+    setCourseGoals(prevGoals => {
+      const updatedGoals = prevGoals.filter(goal => goal.id !== goalId);
+      return updatedGoals;
+    });
+  };
+
+  let content = (
+    <p style={{ textAlign: 'center' }}>No goals found. Maybe add one?</p>
+  );
+
+  if (courseGoals.length > 0) {
+    content = (
+      <CourseGoalList items={courseGoals} onDeleteItem={deleteItemHandler} />
+    );
+  }
+
   return (
     <div className="App">
       <div id="goal-form">
         <CourseInput onAddGoal={addGoalHandler} />
+      </div>
+      <div id="goals">
+        {content}
       </div>
     </div>
   );
